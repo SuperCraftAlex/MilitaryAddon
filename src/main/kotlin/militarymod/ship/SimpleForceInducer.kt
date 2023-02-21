@@ -9,6 +9,7 @@ import org.valkyrienskies.core.api.ships.getAttachment
 import org.valkyrienskies.core.api.ships.saveAttachment
 import org.valkyrienskies.core.impl.api.ShipForcesInducer
 import org.valkyrienskies.core.impl.game.ships.PhysShipImpl
+import org.valkyrienskies.tournament.api.extension.conv
 import java.util.concurrent.CopyOnWriteArrayList
 
 @JsonAutoDetect(
@@ -36,8 +37,7 @@ class SimpleForceInducer : ShipForcesInducer {
     }
 
     fun addInvariantForce(force: Vec3d) {
-        // conv being a tournament import I'm commenting this next line out
-        //Forces.add(force.conv())
+        Forces.add(force.conv())
     }
 
     companion object {
