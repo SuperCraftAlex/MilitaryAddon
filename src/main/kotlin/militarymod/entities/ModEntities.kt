@@ -7,5 +7,5 @@ import net.minecraftforge.registries.ForgeRegistries
 
 
 object ModEntities {
-    val REGISTRY: DeferredRegister<EntityType<*>>? = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MilitaryMod.ID)
+    val REGISTRY: DeferredRegister<EntityType<*>>? = DeferredRegister.create(ForgeRegistries.ENTITIES, MilitaryMod.modId)
 }

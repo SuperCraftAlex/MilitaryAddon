@@ -1,6 +1,6 @@
 package militarymod.ship
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect
+/*import com.fasterxml.jackson.annotation.JsonAutoDetect
 import de.m_marvin.univec.impl.Vec3d
 import org.joml.Vector3d
 import org.valkyrienskies.core.api.ships.PhysShip
@@ -47,4 +47,4 @@ class SimpleForceInducer : ShipForcesInducer {
         }
     }
 
-}
+}*/
