@@ -17,7 +17,7 @@ issueTrackerURL="https://github.com/SuperCraftAlex/MilitaryAddon/issues"
 modId="military" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="${version}" #mandatory
+version="0.1" #mandatory
  # A display name for the mod
 displayName="Military Mod" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
