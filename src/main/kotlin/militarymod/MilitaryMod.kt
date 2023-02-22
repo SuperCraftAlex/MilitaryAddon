@@ -12,7 +12,7 @@ import thedarkcolour.kotlinforforge.forge.MOD_BUS
 class MilitaryMod {
     init {
 
-        ModEntities.REGISTRY.register(MOD_BUS)
+        ModEntities.REGISTRY?.register(MOD_BUS)
         ModItems.REGISTRY.register(MOD_BUS)
         ModBlocks.REGISTRY.register(MOD_BUS)
         MinecraftForge.EVENT_BUS.register(this)

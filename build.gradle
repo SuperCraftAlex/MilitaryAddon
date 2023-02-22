@@ -1,134 +1,43 @@
 buildscript {
     repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
     dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         // Make sure this version matches the one included in Kotlin for Forge
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
         // OPTIONAL Gradle plugin for Kotlin Serialization
         classpath 'org.jetbrains.kotlin:kotlin-serialization:1.6.10'
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
 plugins {
-    // Kotlin
-    id "org.jetbrains.kotlin.jvm" version "1.7.21" apply false
-    // Kotlin linter
-    id "org.jlleitschuh.gradle.ktlint" version "10.3.0"
-    // Java linter
-    id "checkstyle"
-
-    id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id "com.modrinth.minotaur" version "2.4.5" apply false
-
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-version = Mod_version
-
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'kotlin'
+apply plugin: 'kotlinx-serialization'
+
+version = '1.0.0'
+group = 'military'
+archivesBaseName = 'military'
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-repositories {
-    maven {
-        name = 'Kotlin for Forge'
-        url = 'https://thedarkcolour.github.io/KotlinForForge/'
-    }
-    mavenLocal()
-    maven {
-        name = "Valkyrien Skies Internal"
-        url = 'https://maven.valkyrienskies.org'
-    }
-    maven { url 'https://jitpack.io' }
-
-    flatDir {
-        dir 'libs'
-    }
-}
-
-configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
-}
-
-dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.2.1'
-
-    implementation("org.valkyrienskies:valkyrienskies-118-forge:${vs2_version}") { transitive = false }
-    implementation("org.valkyrienskies.core:api:1.1.0+c92814e9b7") { transitive = false }
-
-    // Add Kotlin for Forge.
-    implementation 'curse.maven:kotlinforforge-351264:3925887'
-
-    implementation 'com.github.SuperCraftAlex:LIBRARY-UnifiedVectors:cac439d176'
-
-    // implementation 'at.martinthedragon:nucleartech:NuclearTechMod-1.18.2-0.0.19.2-snapshot20230219T122020'
-    implementation fileTree(dir: 'libs', include: '*.jar')
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    // Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-    it.options.release = 17
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
-}
-
 minecraft {
-    // The mappings can be changed at any time and must be in the following format.
-    // Channel:   Version:
-    // official   MCVersion             Official field/method names from Mojang mapping files
-    // parchment  YYYY.MM.DD-MCVersion  Open community-sourced parameter names and javadocs layered on top of official
-    //
-    // You must be aware of the Mojang license when using the 'official' or 'parchment' mappings.
-    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-    //
-    // Parchment is an unofficial project maintained by ParchmentMC, separate from MinecraftForge
-    // Additional setup is needed to use their mappings: https://github.com/ParchmentMC/Parchment/wiki/Getting-Started
-    //
-    // Use non-default mappings at your own risk. They may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
+    // Change to your preferred mappings
     mappings channel: 'official', version: '1.18.2'
+    // Add your AccessTransformer
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
 
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'military'
 
             mods {
                 military {
@@ -138,42 +47,10 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/server')
 
-            property 'forge.logging.markers', 'REGISTRIES'
-
+            property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'military'
-
-            mods {
-                military {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        // This run config launches GameTestServer and runs all registered gametests, then exits.
-        // By default, the server will crash when no gametests are provided.
-        // The gametest system is also enabled by default for other run configs under the /test command.
-        gameTestServer {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'military'
 
             mods {
                 military {
@@ -185,12 +62,10 @@ minecraft {
         data {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'REGISTRIES'
-
+            property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
 
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'military', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'military', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
 
             mods {
                 military {
@@ -201,39 +76,108 @@ minecraft {
     }
 }
 
+// Include assets and data from data generators
+sourceSets.main.resources { srcDirs 'src/generated/resources/' }
+
+repositories {
+    // KFF
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+
+    // Valkyrien Skies repository
+    // maven { url = 'https://maven.valkyrienskies.org' }
+
+    mavenCentral()
+
+    // jitpack for univec
+    maven { url 'https://jitpack.io' }
+
+    // libs folder for ntm
+    flatDir {
+        dir 'libs'
+    }
+}
+
+dependencies {
+    // Use the latest version of Minecraft Forge
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
+
+    // Valkyrien Skies 2
+    // implementation("org.valkyrienskies:valkyrienskies-118-forge:${vs2_version}") { transitive = false }
+    // implementation("org.valkyrienskies.core:api:1.1.0+c92814e9b7") { transitive = false }
+
+    // UniVec
+    implementation 'com.github.SuperCraftAlex:LIBRARY-UnifiedVectors:cac439d176'
+
+    // me desperately trying to get ntm as a dependency :/
+    // implementation 'at.martinthedragon:nucleartech:NuclearTechMod-1.18.2-0.0.19.2-snapshot20230219T122020'
+    //implementation fileTree(dir: 'libs', include: '*.jar')
+
+    // implementation files('libs/nucleartech-1.18.2-0.0.19.2-snapshot20230222T180857-api.jar')
+    // implementation files('libs/nucleartech-1.18.2-0.0.19.2-snapshot20230222T180857-slim.jar')
+    // runtimeOnly files('libs/nucleartech-1.18.2-0.0.19.2-snapshot20230222T180857-slim.jar')
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
+
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "militarymod",
-                "Specification-Vendor"    : "militarymodsareus",
-                "Specification-Version"   : Mod_version,
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "militarymodsareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Specification-Title': "military",
+                'Specification-Vendor': "militarysareus",
+                'Specification-Version': "1", // We are version 1 of ourselves
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor' :"militarysareus",
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-// // Example configuration to allow publishing using the maven-publish plugin
-// // This is the preferred method to reobfuscate your jar file
-// jar.finalizedBy('reobfJar')
-// // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-// // publish.dependsOn('reobfJar')
-//
-// publishing {
-//     publications {
-//         mavenJava(MavenPublication) {
-//             artifact jar
-//         }
-//     }
-//     repositories {
-//         maven {
-//             url "file://${project.projectDir}/mcmodsrepo"
-//         }
-//     }
-// }
-//
-// tasks.withType(JavaCompile).configureEach {
-//     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-// }
+// CHANGE THESE EACH KFF UPDATE
+ext.kotlin_version = '1.6.10'
+ext.coroutines_version = '1.6.0'
+ext.serialization_version = '1.3.2'
+
+project.properties['kotlin.stdlib.default.dependency'] = false
+
+configurations {
+    library
+}
+
+// Used to manually add non-mc libraries to the runtime classpaths found in build/classpath
+// If you have any module issues, check these files to make sure there are no duplicate dependencies
+minecraft.runs.all {
+    lazyToken('minecraft_classpath') {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+    }
+}
+
+repositories {
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+}
+
+dependencies {
+    // Kotlin for Forge
+    implementation 'thedarkcolour:kotlinforforge:3.9.0'
+
+    groovy.lang.Closure exclude_annotations = { exclude group: 'org.jetbrains', module: 'annotations' }
+
+    // Add everything to the classpath correctly
+    library(group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: coroutines_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-serialization-json', version: serialization_version, exclude_annotations)
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '17'
+}
