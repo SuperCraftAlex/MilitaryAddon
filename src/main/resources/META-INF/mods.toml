@@ -50,14 +50,14 @@ The best military mod!
 
 [[dependencies.military]]
     modId = "valkyrienskies"
-    mandatory = false #todo: change when gradle fixed
+    mandatory = true
     versionRange = "[2,)"
     ordering = "AFTER"
     side = "BOTH"
 
 [[dependencies.military]]
     modId = "nucleartech"
-    mandatory = false #todo: change when gradle fixed
+    mandatory = true
     versionRange = "[0.0.19.1,)"
     ordering = "AFTER"
     side = "BOTH"

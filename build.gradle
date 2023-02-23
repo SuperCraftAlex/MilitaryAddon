@@ -38,6 +38,9 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
 
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
             mods {
                 military {
                     source sourceSets.main
@@ -51,6 +54,9 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
 
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
             mods {
                 military {
                     source sourceSets.main
@@ -63,6 +69,9 @@ minecraft {
 
             property 'forge.logging.markers', 'SCAN,LOADING,CORE'
             property 'forge.logging.console.level', 'debug'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             args '--mod', 'military', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
 
@@ -85,9 +94,6 @@ repositories {
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
     }
 
-    // Valkyrien Skies repository
-    // maven { url = 'https://maven.valkyrienskies.org' }
-
     mavenCentral()
 
     // jitpack for univec
@@ -95,28 +101,30 @@ repositories {
 
     // libs folder for ntm
     flatDir {
-        dir 'libs'
+        dirs 'libs'
     }
+
+    // Valkyrien Skies repository
+    maven { url = 'https://maven.valkyrienskies.org' }
 }
 
 dependencies {
     // Use the latest version of Minecraft Forge
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
 
+    // someone told me to do this...
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
     // Valkyrien Skies 2
-    // implementation("org.valkyrienskies:valkyrienskies-118-forge:${vs2_version}") { transitive = false }
-    // implementation("org.valkyrienskies.core:api:1.1.0+c92814e9b7") { transitive = false }
+    implementation(fg.deobf("org.valkyrienskies:valkyrienskies-118-forge:${vs2_version}")) { transitive = false; exclude group: 'org.jetbrains', module: 'annotations'}
+    implementation("org.valkyrienskies.core:api:1.1.0+c92814e9b7") { transitive = false; exclude group: 'org.jetbrains', module: 'annotations' }
 
     // UniVec
     implementation 'com.github.SuperCraftAlex:LIBRARY-UnifiedVectors:cac439d176'
 
-    // me desperately trying to get ntm as a dependency :/
-    // implementation 'at.martinthedragon:nucleartech:NuclearTechMod-1.18.2-0.0.19.2-snapshot20230219T122020'
-    //implementation fileTree(dir: 'libs', include: '*.jar')
-
-    // implementation files('libs/nucleartech-1.18.2-0.0.19.2-snapshot20230222T180857-api.jar')
-    // implementation files('libs/nucleartech-1.18.2-0.0.19.2-snapshot20230222T180857-slim.jar')
-    // runtimeOnly files('libs/nucleartech-1.18.2-0.0.19.2-snapshot20230222T180857-slim.jar')
+    implementation fg.deobf("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857")
+    implementation fg.deobf("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857-api")
+    sourceArtifacts("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857-sources")
 }
 
 compileKotlin {
