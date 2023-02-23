@@ -1,6 +1,6 @@
 package militarymod.ship
 
-/*import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.JsonAutoDetect
 import de.m_marvin.univec.impl.Vec3d
 import org.joml.Vector3d
 import org.valkyrienskies.core.api.ships.PhysShip
@@ -9,7 +9,6 @@ import org.valkyrienskies.core.api.ships.getAttachment
 import org.valkyrienskies.core.api.ships.saveAttachment
 import org.valkyrienskies.core.impl.api.ShipForcesInducer
 import org.valkyrienskies.core.impl.game.ships.PhysShipImpl
-import org.valkyrienskies.tournament.api.extension.conv
 import java.util.concurrent.CopyOnWriteArrayList
 
 @JsonAutoDetect(
@@ -23,7 +22,6 @@ class SimpleForceInducer : ShipForcesInducer {
     private val Forces = CopyOnWriteArrayList<Vector3d>()
 
     override fun applyForces(physShip: PhysShip) {
-        if (physShip == null) return
         physShip as PhysShipImpl
 
         Forces.forEach {
@@ -41,10 +39,10 @@ class SimpleForceInducer : ShipForcesInducer {
     }
 
     companion object {
-        fun getOrCreate(ship: ServerShip): SimpleShipControl {
-            return ship.getAttachment<SimpleShipControl>()
-                ?: SimpleShipControl().also { ship.saveAttachment(it) }
+        fun getOrCreate(ship: ServerShip): SimpleForceInducer {
+            return ship.getAttachment<SimpleForceInducer>()
+                ?: SimpleForceInducer().also { ship.saveAttachment(it) }
         }
     }
 
-}*/
+}

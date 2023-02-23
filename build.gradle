@@ -122,6 +122,11 @@ dependencies {
     // UniVec
     implementation 'com.github.SuperCraftAlex:LIBRARY-UnifiedVectors:cac439d176'
 
+    // fasterxml.jackson   dont know why it isnt already in
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.2'
+    // same
+    implementation 'org.joml:joml:1.10.5'
+
     implementation fg.deobf("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857")
     implementation fg.deobf("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857-api")
     sourceArtifacts("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857-sources")
