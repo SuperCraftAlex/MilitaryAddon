@@ -1,5 +1,7 @@
 package militarymod
 
+import com.github.imifou.jsonschema.module.addon.annotation.JsonSchema
+
 object MilitaryConfig {
     @JvmField
     val CLIENT = Client()
@@ -9,5 +11,8 @@ object MilitaryConfig {
 
     class Client
 
-    class Server
+    class Server {
+        @JsonSchema(description = "The Force multiplier of jet engines")
+        var JetEnginePowerMultiplyer = 1
+    }
 }

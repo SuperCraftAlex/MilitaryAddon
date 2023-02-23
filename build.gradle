@@ -116,16 +116,21 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Valkyrien Skies 2
-    implementation(fg.deobf("org.valkyrienskies:valkyrienskies-118-forge:${vs2_version}")) { transitive = false; exclude group: 'org.jetbrains', module: 'annotations'}
-    implementation("org.valkyrienskies.core:api:1.1.0+c92814e9b7") { transitive = false; exclude group: 'org.jetbrains', module: 'annotations' }
+    implementation(fg.deobf("org.valkyrienskies:valkyrienskies-118-forge:${vs2_version}")) { /*transitive = false;*/ exclude group: 'org.jetbrains', module: 'annotations'}
+    implementation("org.valkyrienskies.core:api:1.1.0+c92814e9b7") { /*transitive = false;*/ exclude group: 'org.jetbrains', module: 'annotations' }
 
     // UniVec
     implementation 'com.github.SuperCraftAlex:LIBRARY-UnifiedVectors:cac439d176'
 
     // fasterxml.jackson   dont know why it isnt already in
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.2'
-    // same
+
+    // joml stuff          same
     implementation 'org.joml:joml:1.10.5'
+    implementation 'org.joml:joml-primitives:1.10.0'
+
+    // jsonschema
+    implementation 'com.github.imifou:jsonschema-module-addon:1.2.1'
 
     implementation fg.deobf("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857")
     implementation fg.deobf("at.martinthedragon:nucleartech:1.18.2-0.0.19.2:snapshot20230222T180857-api")
