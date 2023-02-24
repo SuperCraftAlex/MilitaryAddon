@@ -1,22 +1,19 @@
 package militarymod
 
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.logging.LogUtils
+import militarymod.blockentities.ModBE
 import militarymod.blocks.ModBlocks
-import militarymod.commands.ExampleCommand
 import militarymod.entities.ModEntities
 import militarymod.items.ModItems
-import net.minecraft.commands.CommandSourceStack
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
+
 @Mod("military")
 class MilitaryMod {
     init {
-        val dispatcher = CommandDispatcher<CommandSourceStack>()
-        ExampleCommand.register(dispatcher)
-
+        ModBE.REGISTRY?.register(MOD_BUS)
         ModEntities.REGISTRY?.register(MOD_BUS)
         ModItems.REGISTRY.register(MOD_BUS)
         ModBlocks.REGISTRY.register(MOD_BUS)
@@ -24,7 +21,7 @@ class MilitaryMod {
     }
 
     companion object {
-        val modId = "military"
+        const val modId = "military"
         private val LOGGER = LogUtils.getLogger()
     }
 }
