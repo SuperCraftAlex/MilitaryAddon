@@ -1,0 +1,7 @@
+# tabs
+itemGroup.military.tab="MilitaryMod debug"
+
+# blocks
+block.military.debug_jet_engine="Jet Engine (Debug)"
+
+# items

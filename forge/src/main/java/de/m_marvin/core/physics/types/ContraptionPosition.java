@@ -1,14 +1,14 @@
 package de.m_marvin.core.physics.types;
 
-import de.m_marvin.unimat.impl.Quaternion;
-import de.m_marvin.univec.impl.Vec3d;
+import com.mojang.math.Quaternion;
+import org.joml.Vector3d;
 
 public class ContraptionPosition {
 	
 	public Quaternion orientation;
-	public Vec3d position;
+	public Vector3d position;
 	
-	public ContraptionPosition(Quaternion orientation, Vec3d position) {
+	public ContraptionPosition(Quaternion orientation, Vector3d position) {
 		this.orientation = orientation;
 		this.position = position;
 	}
@@ -21,11 +21,11 @@ public class ContraptionPosition {
 		this.orientation = orientation;
 	}
 	
-	public Vec3d getPosition() {
+	public Vector3d getPosition() {
 		return position;
 	}
 	
-	public void setPosition(Vec3d position) {
+	public void setPosition(Vector3d position) {
 		this.position = position;
 	}
 	

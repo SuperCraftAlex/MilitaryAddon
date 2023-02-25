@@ -1,19 +1,11 @@
 package de.m_marvin.core.util;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
 
-import de.m_marvin.unimat.impl.Quaternion;
-import de.m_marvin.univec.impl.Vec2f;
-import de.m_marvin.univec.impl.Vec3d;
-import de.m_marvin.univec.impl.Vec3f;
-import de.m_marvin.univec.impl.Vec3i;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -28,6 +20,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3d;
 
 public class MathUtility {
 
@@ -69,19 +62,19 @@ public class MathUtility {
 			);
 	}
 
-	public static Vec3d getMinCorner(Vec3d pos1, Vec3d pos2) {
-		return new Vec3d(
-				Math.min(pos1.getX(), pos2.getX()),
-				Math.min(pos1.getY(), pos2.getY()),
-				Math.min(pos1.getZ(), pos2.getZ())
+	public static Vector3d getMinCorner(Vector3d pos1, Vector3d pos2) {
+		return new Vector3d(
+				Math.min(pos1.x, pos2.x),
+				Math.min(pos1.y, pos2.y),
+				Math.min(pos1.z, pos2.z)
 			);
 	}
 	
-	public static Vec3d getMaxCorner(Vec3d pos1, Vec3d pos2) {
-		return new Vec3d(
-				Math.max(pos1.getX(), pos2.getX()),
-				Math.max(pos1.getY(), pos2.getY()),
-				Math.max(pos1.getZ(), pos2.getZ())
+	public static Vector3d getMaxCorner(Vector3d pos1, Vector3d pos2) {
+		return new Vector3d(
+				Math.max(pos1.x, pos2.x),
+				Math.max(pos1.y, pos2.y),
+				Math.max(pos1.z, pos2.z)
 			);
 	}
 	
@@ -92,18 +85,18 @@ public class MathUtility {
 		return new BlockPos(middleX, middleY, middleZ);
 	}
 
-	public static Vec3d getMiddle(BlockPos pos1, BlockPos pos2) {
+	public static Vector3d getMiddle(BlockPos pos1, BlockPos pos2) {
 		double middleX = Math.min(pos1.getX(), pos2.getX()) + (Math.max(pos1.getX(), pos2.getX()) - Math.min(pos1.getX(), pos2.getX()) + 1) / 2.0;
 		double middleY = Math.min(pos1.getY(), pos2.getY()) + (Math.max(pos1.getY(), pos2.getY()) - Math.min(pos1.getY(), pos2.getY()) + 1) / 2.0;
 		double middleZ = Math.min(pos1.getZ(), pos2.getZ()) + (Math.max(pos1.getZ(), pos2.getZ()) - Math.min(pos1.getZ(), pos2.getZ()) + 1) / 2.0;
-		return new Vec3d(middleX, middleY, middleZ);
+		return new Vector3d(middleX, middleY, middleZ);
 	}
 
-	public static Vec3d getMiddle(Vec3d pos1, Vec3d pos2) {
-		double middleX = Math.min(pos1.getX(), pos2.getX()) + (Math.max(pos1.getX(), pos2.getX()) - Math.min(pos1.getX(), pos2.getX()) + 1) / 2.0;
-		double middleY = Math.min(pos1.getY(), pos2.getY()) + (Math.max(pos1.getY(), pos2.getY()) - Math.min(pos1.getY(), pos2.getY()) + 1) / 2.0;
-		double middleZ = Math.min(pos1.getZ(), pos2.getZ()) + (Math.max(pos1.getZ(), pos2.getZ()) - Math.min(pos1.getZ(), pos2.getZ()) + 1) / 2.0;
-		return new Vec3d(middleX, middleY, middleZ);
+	public static Vector3d getMiddle(Vector3d pos1, Vector3d pos2) {
+		double middleX = Math.min(pos1.x, pos2.x) + (Math.max(pos1.x, pos2.x) - Math.min(pos1.x, pos2.x) + 1) / 2.0;
+		double middleY = Math.min(pos1.y, pos2.y) + (Math.max(pos1.y, pos2.y) - Math.min(pos1.y, pos2.y) + 1) / 2.0;
+		double middleZ = Math.min(pos1.z, pos2.z) + (Math.max(pos1.z, pos2.z) - Math.min(pos1.z, pos2.z) + 1) / 2.0;
+		return new Vector3d(middleX, middleY, middleZ);
 	}
 	
 	public static double directionAngleDegrees(Direction direction) {
@@ -117,94 +110,16 @@ public class MathUtility {
 		default: return 0;
 		}
 	}
-	
-	public static Vec3d rotatePoint(Vec3d point, float angle, boolean degrees, Axis axis) {
-		Vec3d rotationAxis = null;
-		switch (axis) {
-		case X: rotationAxis = new Vec3d(1, 0, 0); break;
-		case Y: rotationAxis = new Vec3d(0, 1, 0); break;
-		case Z: rotationAxis = new Vec3d(0, 0, 1); break;
-		}
-		return rotatePoint(point, rotationAxis, angle, degrees);
-	}
-	
-	public static Vec3f rotatePoint(Vec3f point, float angle, boolean degrees, Axis axis) {
-		Vec3f rotationAxis = null;
-		switch (axis) {
-		case X: rotationAxis = new Vec3f(1, 0, 0); break;
-		case Y: rotationAxis = new Vec3f(0, 1, 0); break;
-		case Z: rotationAxis = new Vec3f(0, 0, 1); break;
-		}
-		return rotatePoint(point, rotationAxis, angle, degrees);
-	}
-	
-	public static Vec3i rotatePoint(Vec3i point, float angle, boolean degrees, Axis axis) {
-		Vec3f rotationAxis = null;
-		switch (axis) {
-		case X: rotationAxis = new Vec3f(1, 0, 0); break;
-		case Y: rotationAxis = new Vec3f(0, 1, 0); break;
-		case Z: rotationAxis = new Vec3f(0, 0, 1); break;
-		}
-		return rotatePoint(point, rotationAxis, angle, degrees);
-	}
 
-	public static Vec3d rotatePoint(Vec3d point, Vec3d axis, float angle, boolean degrees) {
-		if (degrees) angle = (float) Math.toRadians(angle);
-		Quaternion quat = new Quaternion(axis, angle);
-		return point.transform(quat);
-	}
-	
-	public static Vec3f rotatePoint(Vec3f point, Vec3f axis, float angle, boolean degrees) {
-		if (degrees) angle = (float) Math.toRadians(angle);
-		Quaternion quat = new Quaternion(axis, angle);
-		return point.transform(quat);
-	}
-	
-	public static Vec3i rotatePoint(Vec3i point, Vec3f axis, float angle, boolean degrees) {
-		if (degrees) angle = (float) Math.toRadians(angle);
-		Quaternion quat = new Quaternion(axis, angle);
-		return point.transform(quat);
-	}
-	
 	public static boolean isInChunk(ChunkPos chunk, BlockPos block) {
 		return 	chunk.getMinBlockX() <= block.getX() && chunk.getMaxBlockX() >= block.getX() &&
 				chunk.getMinBlockZ() <= block.getZ() && chunk.getMaxBlockZ() >= block.getZ();
 	}
 	
-	public static Set<ChunkPos> getChunksOnLine(Vec2f from, Vec2f to) {	
-		Vec2f lineVec = to.copy().sub(from);
-		Vec2f chunkOff = from.copy().module(16F);
-		chunkOff.x = lineVec.x() < 0 ? -(16 - chunkOff.x()) : chunkOff.x();
-		chunkOff.y = lineVec.y() < 0 ? -(16 - chunkOff.y()) : chunkOff.y();
-		Vec2f worldOff = from.copy().sub(chunkOff);
-		Vec2f lineRlativeTarget = to.copy().sub(worldOff);
-		
-		int insecsX = (int) Math.floor(Math.abs(lineRlativeTarget.x()) / 16);
-		int insecsZ = (int) Math.floor(Math.abs(lineRlativeTarget.y()) / 16);
-		
-		Set<ChunkPos> chunks = new HashSet<ChunkPos>();
-		chunks.add(new ChunkPos(new BlockPos(from.x, 0, from.y)));
-		
-		for (int insecX = 1; insecX <= insecsX; insecX++) {
-			int chunkX = (int) (worldOff.x + insecX * (lineVec.x() < 0 ? -16 : 16));
-			if (lineVec.x() < 0) chunkX -= 1;
-			int chunkZ = (int) ((Math.abs(chunkX - from.x()) / Math.abs(lineVec.x())) * lineVec.y() + from.y());
-			chunks.add(new ChunkPos(new BlockPos(chunkX, 0, chunkZ)));
-		}
-		for (int insecZ = 1; insecZ <= insecsZ; insecZ++) {
-			int chunkZ = (int) (worldOff.y + insecZ * (lineVec.y() < 0 ? -16 : 16));
-			if (lineVec.y() < 0) chunkZ -= 1;
-			int chunkX = (int) ((Math.abs(chunkZ - from.y()) / Math.abs(lineVec.y())) * lineVec.x() + from.x());
-			chunks.add(new ChunkPos(new BlockPos(chunkX, 0, chunkZ)));
-		}
-		
-		return chunks;
-	}
-	
-	public static Vec3d[] lineInfinityIntersection(Vec3d lineA1, Vec3d lineA2, Vec3d lineB1, Vec3d lineB2) {
-		Vec3d p43 = new Vec3d(lineB2.x - lineB1.x, lineB2.y - lineB1.y, lineB2.z - lineB1.z);
-		Vec3d p21 = new Vec3d(lineA2.x - lineA1.x, lineA2.y - lineA1.y, lineA2.z - lineA1.z);
-		Vec3d p13 = new Vec3d(lineA1.x - lineB1.x, lineA1.y - lineB1.y, lineA1.z - lineB1.z);
+	public static Vector3d[] lineInfinityIntersection(Vector3d lineA1, Vector3d lineA2, Vector3d lineB1, Vector3d lineB2) {
+		Vector3d p43 = new Vector3d(lineB2.x - lineB1.x, lineB2.y - lineB1.y, lineB2.z - lineB1.z);
+		Vector3d p21 = new Vector3d(lineA2.x - lineA1.x, lineA2.y - lineA1.y, lineA2.z - lineA1.z);
+		Vector3d p13 = new Vector3d(lineA1.x - lineB1.x, lineA1.y - lineB1.y, lineA1.z - lineB1.z);
 		double d1343 = p13.x * p43.x + p13.y * p43.y + p13.z * p43.z;
 		double d4321 = p43.x * p21.x + p43.y * p21.y + p43.z * p21.z;
 		double d4343 = p43.x * p43.x + p43.y * p43.y + p43.z * p43.z;
@@ -219,25 +134,33 @@ public class MathUtility {
 		Vec3 cl1 = new Vec3(lineA1.x+mua*p21.x, lineA1.y+mua*p21.y, lineA1.z+mua*p21.z);
 		Vec3 cl2 = new Vec3(lineB1.x+mub*p43.x, lineB1.y+mub*p43.y, lineB1.z+mub*p43.z);
 		
-		return new Vec3d[] {Vec3d.fromVec(cl1), Vec3d.fromVec(cl2)};
+		return new Vector3d[] {new Vector3d(
+				cl1.x,
+				cl1.y,
+				cl1.z
+		), new Vector3d(
+				cl1.x,
+				cl1.y,
+				cl1.z
+		)};
 	}
 	
-	public static boolean isOnLine(Vec3d point, Vec3d line1, Vec3d line2, double t) {
-		return line1.copy().sub(point).length() + line2.copy().sub(point).length() <= line1.copy().sub(line2).length() + t;
+	public static boolean isOnLine(Vector3d point, Vector3d line1, Vector3d line2, double t) {
+		return line1.sub(point).length() + line2.sub(point).length() <= line1.sub(line2).length() + t;
 	}
 	
-	public static Optional<Vec3d> getHitPoint(Vec3d lineA1, Vec3d lineA2, Vec3d lineB1, Vec3d lineB2, double tolerance) {
-		Vec3d[] shortesLine = lineInfinityIntersection(lineA1, lineA2, lineB1, lineB2);
+	public static Optional<Vector3d> getHitPoint(Vector3d lineA1, Vector3d lineA2, Vector3d lineB1, Vector3d lineB2, double tolerance) {
+		Vector3d[] shortesLine = lineInfinityIntersection(lineA1, lineA2, lineB1, lineB2);
 		if (isOnLine(shortesLine[0], lineA1, lineA2, 0.1F) && isOnLine(shortesLine[1], lineB1, lineB2, 0.1F)) {
-			if (shortesLine[0].copy().sub(shortesLine[1]).length() <= tolerance) return Optional.of(shortesLine[0]);
+			if (shortesLine[0].sub(shortesLine[1]).length() <= tolerance) return Optional.of(shortesLine[0]);
 		}
 		return Optional.empty();
 	}
 	
-	public static boolean doLinesCross(Vec3d lineA1, Vec3d lineA2, Vec3d lineB1, Vec3d lineB2, double tolerance) {
-		Vec3d[] shortesLine = lineInfinityIntersection(lineA1, lineA2, lineB1, lineB2);
+	public static boolean doLinesCross(Vector3d lineA1, Vector3d lineA2, Vector3d lineB1, Vector3d lineB2, double tolerance) {
+		Vector3d[] shortesLine = lineInfinityIntersection(lineA1, lineA2, lineB1, lineB2);
 		if (isOnLine(shortesLine[0], lineA1, lineA2, 0.1F) && isOnLine(shortesLine[1], lineB1, lineB2, 0.1F)) {
-			return shortesLine[0].copy().sub(shortesLine[1]).length() <= tolerance;
+			return shortesLine[0].sub(shortesLine[1]).length() <= tolerance;
 		}
 		return false;
 	}

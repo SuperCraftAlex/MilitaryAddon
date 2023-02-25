@@ -1,10 +1,9 @@
 package militarymod.blocks.engine
 
-import api.militarymod.extensions.level_vs2.*
-import api.militarymod.extensions.vecpos.conv
-import api.militarymod.extensions.vecpos.convD
+import api.militarymod.physics.extension.getShipManagingPos
+import api.militarymod.vecpos.convD
+import de.m_marvin.core.physics.PhysicUtility
 
-import de.m_marvin.univec.impl.Vec3d
 import militarymod.ship.JetEngineForceInducer
 import militarymod.util.DirectionalShape
 import militarymod.util.RotShapes
@@ -64,8 +63,17 @@ class JetEngineBlock : DirectionalBlock (
         val signal = level.getBestNeighborSignal(pos)
         level.setBlock(pos, state.setValue(BlockStateProperties.POWER, signal), 2)
 
-        JetEngineForceInducer.getOrCreate(level.getShipObjectManagingPos(pos) ?: level.getShipManagingPos(pos) ?: return
-        ).addEngine(pos, state.getValue(FACING).normal.convD().mul(state.getValue(BlockStateProperties.POWER).toDouble()))
+        val ship = level.getShipManagingPos(pos)
+        ship?.let {
+            JetEngineForceInducer.getOrCreate(it).addEngine(
+                pos,
+                state.getValue(FACING).normal.convD().mul(
+                    state.getValue(BlockStateProperties.POWER).toDouble()
+                )
+            )
+        }
+
+        println("sdadad ff s $ship")
     }
 
     override fun onRemove(state: BlockState, level: Level, pos: BlockPos, newState: BlockState, isMoving: Boolean) {
@@ -75,7 +83,7 @@ class JetEngineBlock : DirectionalBlock (
         level as ServerLevel
 
         state.setValue(BlockStateProperties.POWER, 0)
-        level.getShipManagingPos(pos)?.getAttachment<JetEngineForceInducer>()?.removeEngine(pos, Vec3d(state.getValue(FACING).normal).mul(state.getValue(BlockStateProperties.POWER).toDouble()))
+        level.getShipManagingPos(pos)?.getAttachment<JetEngineForceInducer>()?.removeEngine(pos, state.getValue(FACING).normal.convD().mul(state.getValue(BlockStateProperties.POWER).toDouble()))
     }
 
     override fun neighborChanged(

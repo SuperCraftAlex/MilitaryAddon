@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.Mod
 import org.valkyrienskies.core.impl.config.VSConfigClass
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
-
 @Mod("military")
 class MilitaryMod {
 
