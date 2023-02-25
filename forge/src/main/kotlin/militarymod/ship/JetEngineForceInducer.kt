@@ -1,6 +1,6 @@
 package militarymod.ship
 
-import api.militarymod.extensions.conv
+import api.militarymod.extensions.vecpos.conv
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import de.m_marvin.univec.impl.Vec3d
 import de.m_marvin.univec.impl.Vec3i
@@ -22,12 +22,12 @@ import org.valkyrienskies.core.impl.game.ships.PhysShipImpl
 )
 class JetEngineForceInducer : ShipForcesInducer {
 
-    private val Thrusters = mutableListOf<Tuple<Vec3i, Vec3d>>()
+    private val Engines = mutableListOf<Tuple<Vec3i, Vec3d>>()
 
     override fun applyForces(physShip: PhysShip) {
         physShip as PhysShipImpl
 
-        Thrusters.forEach {
+        Engines.forEach {
             val pos = it.a
             val force = it.b
 
@@ -41,11 +41,11 @@ class JetEngineForceInducer : ShipForcesInducer {
     }
 
     fun addEngine(pos: BlockPos, force: Vec3d) {
-        Thrusters.add(Tuple(pos.conv(), force))
+        Engines.add(Tuple(pos.conv(), force))
     }
 
     fun removeEngine(pos: BlockPos, force: Vec3d) {
-        Thrusters.remove(Tuple(pos.conv(), force))
+        Engines.remove(Tuple(pos.conv(), force))
     }
 
     companion object {
