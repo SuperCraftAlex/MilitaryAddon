@@ -1,5 +1,6 @@
-package militarymod
+package militarymod.registries
 
+import militarymod.MilitaryMod
 import militarymod.blocks.engine.JetEngineBlock
 import militarymod.tabs.MilitaryTabs
 import net.minecraft.world.item.BlockItem
@@ -10,7 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries
 import thedarkcolour.kotlinforforge.forge.registerObject
 
 object ModBlocks {
-    val REGISTRY: DeferredRegister<Block> = DeferredRegister.create(ForgeRegistries.BLOCKS, MilitaryMod.MODID)
+    val REGISTRY: DeferredRegister<Block> = DeferredRegister.create(ForgeRegistries.BLOCKS, MilitaryMod.modId)
 
     // Debug:
     val DEBUG_JET_ENGINE by REGISTRY.registerObject("debug_jet_engine", ::JetEngineBlock)
