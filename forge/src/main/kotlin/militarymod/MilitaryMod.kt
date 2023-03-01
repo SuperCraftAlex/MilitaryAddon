@@ -1,6 +1,9 @@
 package militarymod
 
 import com.mojang.logging.LogUtils
+import militarymod.registries.ModBlocks
+import militarymod.registries.ModEntities
+import militarymod.registries.ModItems
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import org.valkyrienskies.core.impl.config.VSConfigClass
@@ -25,7 +28,7 @@ class MilitaryMod {
     }
 
     companion object {
-        const val MODID = "military"
+        const val modId = "military"
 
         val LOGGER = LogUtils.getLogger()
     }

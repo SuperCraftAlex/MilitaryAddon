@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Blocks
 
 object MilitaryTabs {
 
-    private val tk = MilitaryMod.MODID+"."
+    private val tk = MilitaryMod.modId+"."
 
     val TAB = object : CreativeModeTab(tk+"tab") {
         override fun makeIcon(): ItemStack {

@@ -12,7 +12,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD,modid=MilitaryMod.MODID)
+@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD,modid=MilitaryMod.modId)
 public class ModCapabilities {
 	public static final Capability<PhysicHandlerCapability> PHYSIC_DATA_HOLDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<PhysicHandlerCapability>() {});
 	
@@ -20,12 +20,12 @@ public class ModCapabilities {
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 	}
 
-	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.FORGE,modid=MilitaryMod.MODID)
+	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.FORGE,modid=MilitaryMod.modId)
 	public class Attachment {
 		
 		@SubscribeEvent
 		public static void attachCapabilities(AttachCapabilitiesEvent<Level> event) {
-			event.addCapability(new ResourceLocation(MilitaryMod.MODID, "physics"), new PhysicHandlerCapability(event.getObject()));
+			event.addCapability(new ResourceLocation(MilitaryMod.modId, "physics"), new PhysicHandlerCapability(event.getObject()));
 		}
 		
 	}
